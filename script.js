@@ -127,7 +127,47 @@ class Simon {
         });
         this.updateRound('🏆');
     }
-}
+    registrarNombre(nombre) {
+        // 1. Verificar si el nombre ya existe en localStorage
+        const nombresGuardados = localStorage.getItem('nombres');
+        let nombres = nombresGuardados ? JSON.parse(nombresGuardados) : [];
+      
+        if (nombres.includes(nombre)) {
+          // Si el nombre ya existe, puedes mostrar un mensaje o simplemente salir de la función
+          console.log('El nombre "' + nombre + '" ya está registrado.');
+          return;
+        }
+      
+        // 2. Agregar el nuevo nombre al array
+        nombres.push(nombre);
+      
+        // 3. Guardar el array actualizado en localStorage
+        localStorage.setItem('nombres', JSON.stringify(nombres));
+      
+        console.log('Nombre "' + nombre + '" registrado correctamente.');
+      }
+    }
+
 
 const simon = new Simon(simonButtons, startButton, round);
 simon.init();
+
+
+const formularioRegistro = document.getElementById('formulario-registro');
+
+formularioRegistro.addEventListener('submit', (evento) => {
+  evento.preventDefault(); // Evita que se recargue la página al enviar el formulario
+
+  const nombreJugador = document.getElementById('nombre').value;
+
+  if (nombreJugador.trim() !== '') {
+    localStorage.setItem('nombreJugador', nombreJugador);
+    // Oculta el formulario de registro y muestra el juego
+    document.getElementById('registro-jugador').style.display = 'none';
+    document.querySelector('.simon-container').style.display = 'block'; // Muestra el contenedor del juego
+    // Aquí puedes iniciar el juego o mostrar un mensaje de bienvenida
+    alert('¡Bienvenido, ' + nombreJugador + '!');
+  } else {
+    alert('Por favor, ingresa un nombre válido.');
+  }
+});
